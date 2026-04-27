@@ -161,6 +161,41 @@
       color: var(--muted);
       margin: 0 0 14px;
     }
+    .companies-presentation {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .company-mini {
+      background: #F4F9FC;
+      border: 1px solid #DCE8F1;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .company-mini:hover {
+      border-color: var(--primary);
+    }
+    .company-mini-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+    .company-mini-desc {
+      font-size: 12.5px;
+      line-height: 1.45;
+      color: var(--muted);
+      margin: 0;
+    }
+    @media (max-width: 540px) {
+      .companies-presentation {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+    }
     .rank-fields {
       display: flex;
       flex-direction: column;
@@ -341,6 +376,21 @@
           <p class="ranking-intro">
             Sélectionne tes 3 entreprises par ordre de préférence. Une entreprise déjà choisie sera grisée dans les listes suivantes.
           </p>
+
+          <div class="companies-presentation">
+            <div class="company-mini">
+              <div class="company-mini-name">Behavior</div>
+              <p class="company-mini-desc">Studio de jeux vidéo basé à Montréal — créateur de Dead by Daylight et collaborations avec de grandes franchises.</p>
+            </div>
+            <div class="company-mini">
+              <div class="company-mini-name">CGI</div>
+              <p class="company-mini-desc">Multinationale canadienne en services-conseils IT et transformation numérique.</p>
+            </div>
+            <div class="company-mini">
+              <div class="company-mini-name">Deloitte</div>
+              <p class="company-mini-desc">Cabinet international en audit, conseil, fiscalité et stratégie d'entreprise.</p>
+            </div>
+          </div>
 
           <div class="rank-fields">
             <div class="rank-row">
