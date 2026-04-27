@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Questionnaire Learning Trip Canada — Choix d'entreprise</title>
+  <style>
+    :root {
+      --primary: #4FB3D9;
+      --primary-dark: #2C7AA3;
+      --accent: #FFB84D;
+      --bg: #F4F8FB;
+      --card: #FFFFFF;
+      --text: #1A2B3C;
+      --muted: #6B7C8E;
+      --border: #DCE6EF;
+      --success: #2BAE66;
+      --error: #E04F4F;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(180deg, #E9F4FB 0%, var(--bg) 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 16px 64px;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-top: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .header img {
+      max-width: 150px;
+      height: auto;
+      filter: drop-shadow(0 6px 16px rgba(27, 58, 92, 0.18));
+    }
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(79, 179, 217, 0.35);
+      border-radius: 999px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--primary-dark);
+      box-shadow: 0 2px 8px rgba(40, 90, 130, 0.06);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .header-badge::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255, 184, 77, 0.25);
+    }
+    .card {
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(27, 58, 92, 0.10);
+      padding: 36px 32px 32px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 50%, var(--accent) 100%);
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-size: 26px;
+      line-height: 1.25;
+      margin: 0 0 10px;
+      color: var(--primary-dark);
+      letter-spacing: -0.01em;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 15px;
+      margin: 0 0 4px;
+    }
+    .deadline {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 4px 12px;
+      background: #FFF4E0;
+      color: #B5750D;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 22px 0 24px;
+    }
+    .field {
+      margin-bottom: 20px;
+    }
+    label.field-label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    label.field-label .required {
+      color: var(--error);
+    }
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+      background: #FBFDFE;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 179, 217, 0.18);
+      background: #fff;
+    }
+    .ranking-intro {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0 0 14px;
+    }
+    .ranking-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-top: 8px;
+    }
+    .ranking-table th,
+    .ranking-table td {
+      padding: 12px 8px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .ranking-table thead th {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .ranking-table thead th:first-child {
+      text-align: left;
+    }
+    .ranking-table tbody tr {
+      transition: background 0.15s;
+    }
+    .ranking-table tbody tr + tr td,
+    .ranking-table tbody tr + tr th {
+      border-top: 1px solid var(--border);
+    }
+    .ranking-table tbody th {
+      text-align: left;
+      font-weight: 600;
+      color: var(--text);
+      font-size: 15px;
+    }
+    .ranking-table tbody th .quota {
+      display: block;
+      font-weight: 400;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .radio-cell {
+      position: relative;
+    }
+    .radio-cell input[type="radio"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.15s, background 0.15s;
+      margin: 0;
+      vertical-align: middle;
+    }
+    .radio-cell input[type="radio"]:hover {
+      border-color: var(--primary);
+    }
+    .radio-cell input[type="radio"]:checked {
+      border-color: var(--primary);
+      background: var(--primary);
+      box-shadow: inset 0 0 0 4px #fff;
+    }
+    .submit-row {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 24px;
+    }
+    button.submit-btn {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 13px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.05s;
+      font-family: inherit;
+    }
+    button.submit-btn:hover:not(:disabled) {
+      background: var(--primary-dark);
+    }
+    button.submit-btn:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+    button.submit-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+    .message {
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-top: 16px;
+      font-size: 14px;
+      display: none;
+    }
+    .message.show { display: block; }
+    .message.success {
+      background: #E5F8EE;
+      color: #136B3A;
+      border: 1px solid #B6E6C9;
+    }
+    .message.error {
+      background: #FCE9E9;
+      color: #8C2424;
+      border: 1px solid #F1B6B6;
+    }
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 16px;
+    }
+    .success-screen {
+      text-align: center;
+      padding: 16px 8px;
+    }
+    .success-screen .check {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 12px;
+      background: var(--success);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 36px;
+      line-height: 64px;
+      font-weight: 700;
+    }
+    .success-screen h2 {
+      color: var(--primary-dark);
+      margin: 0 0 8px;
+    }
+    .success-screen p {
+      color: var(--muted);
+      margin: 0;
+    }
+    @media (max-width: 540px) {
+      body { padding: 16px 12px 48px; }
+      .header img { max-width: 120px; }
+      .header-badge { font-size: 10.5px; padding: 5px 13px; letter-spacing: 0.12em; }
+      .card { padding: 28px 20px 24px; border-radius: 14px; }
+      h1 { font-size: 21px; }
+      .ranking-table th,
+      .ranking-table td { padding: 10px 4px; font-size: 13px; }
+      .ranking-table tbody th { font-size: 14px; }
+      button.submit-btn { width: 100%; }
+      .submit-row { justify-content: stretch; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="logo.png" alt="Learning Trip" />
+      <div class="header-badge">Montréal · Canada</div>
+    </div>
+
+    <div class="card" id="form-card">
+      <span class="eyebrow">Questionnaire étudiant</span>
+      <h1>Choix d'entreprise — Learning Trip Canada</h1>
+      <p class="subtitle">
+        Indique tes préférences pour la visite des entreprises à Montréal.
+        L'attribution se fera selon l'ordre d'arrivée des réponses : premier arrivé, premier servi.
+      </p>
+
+      <div class="divider"></div>
+
+      <form id="questionnaire" novalidate>
+        <div class="field">
+          <label class="field-label" for="nom">Nom &amp; Prénom <span class="required">*</span></label>
+          <input type="text" id="nom" name="nom" required autocomplete="name" placeholder="Ex. Dupont Marie" />
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="email">Email <span class="required">*</span></label>
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="prenom.nom@exemple.com" />
+        </div>
+
+        <div class="field">
+          <label class="field-label">Classe par ordre de préférence <span class="required">*</span></label>
+          <p class="ranking-intro">
+            Coche une case pour chaque entreprise (Choix 1 = ton entreprise préférée, Choix 3 = ton dernier choix).
+            Chaque colonne ne peut être attribuée qu'à une seule entreprise.
+          </p>
+
+          <table class="ranking-table" role="grid">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Choix 1</th>
+                <th>Choix 2</th>
+                <th>Choix 3</th>
+              </tr>
+            </thead>
+            <tbody id="ranking-body">
+              <tr data-company="Behavior">
+                <th>Behavior <span class="quota">33 places max</span></th>
+                <td class="radio-cell"><input type="radio" name="rank-Behavior" value="1" aria-label="Behavior choix 1" /></td>
+                <td class="radio-cell"><input type="radio" name="rank-Behavior" value="2" aria-label="Behavior choix 2" /></td>
+                <td class="radio-cell"><input type="radio" name="rank-Behavior" value="3" aria-label="Behavior choix 3" /></td>
+              </tr>
+              <tr data-company="CGI">
+                <th>CGI <span class="quota">33 places max</span></th>
+                <td class="radio-cell"><input type="radio" name="rank-CGI" value="1" aria-label="CGI choix 1" /></td>
+                <td class="radio-cell"><input type="radio" name="rank-CGI" value="2" aria-label="CGI choix 2" /></td>
+                <td class="radio-cell"><input type="radio" name="rank-CGI" value="3" aria-label="CGI choix 3" /></td>
+              </tr>
+              <tr data-company="Deloitte">
+                <th>Deloitte <span class="quota">34 places max</span></th>
+                <td class="radio-cell"><input type="radio" name="rank-Deloitte" value="1" aria-label="Deloitte choix 1" /></td>
+                <td class="radio-cell"><input type="radio" name="rank-Deloitte" value="2" aria-label="Deloitte choix 2" /></td>
+                <td class="radio-cell"><input type="radio" name="rank-Deloitte" value="3" aria-label="Deloitte choix 3" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="message error" id="error-msg" role="alert"></div>
+
+        <div class="submit-row">
+          <button type="submit" class="submit-btn" id="submit-btn">Envoyer mes choix</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="card" id="success-card" style="display: none;">
+      <div class="success-screen">
+        <div class="check">&#10003;</div>
+        <h2>Réponse enregistrée</h2>
+        <p>Merci ! Tes choix ont bien été pris en compte. L'attribution finale te sera communiquée prochainement.</p>
+      </div>
+    </div>
+
+    <div class="footer">Learning Trip Canada · Montréal</div>
+  </div>
+
+  <script>
+    // ⚠️ REMPLACER par l'URL du Web App Apps Script déployé (voir apps_script.gs)
+    const ENDPOINT_URL = "https://script.google.com/macros/s/AKfycbypuMwsat5aHML1YGz2pvcoHIyQ57adXDrrawSBHVnuyMNRCKiq9L_rMLx-TNACLC_XXA/exec";
+
+    const COMPANIES = ["Behavior", "CGI", "Deloitte"];
+    const form = document.getElementById("questionnaire");
+    const submitBtn = document.getElementById("submit-btn");
+    const errorMsg = document.getElementById("error-msg");
+    const formCard = document.getElementById("form-card");
+    const successCard = document.getElementById("success-card");
+
+    // Mutual exclusion : when a rank is picked for a company,
+    // uncheck the same rank on other companies.
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+      radio.addEventListener("change", () => {
+        const rank = radio.value;
+        const company = radio.name.replace("rank-", "");
+        document.querySelectorAll('input[type="radio"]').forEach(other => {
+          if (other === radio) return;
+          if (other.value === rank && other.name !== radio.name) {
+            other.checked = false;
+          }
+        });
+      });
+    });
+
+    function showError(msg) {
+      errorMsg.textContent = msg;
+      errorMsg.classList.add("show");
+    }
+    function clearError() {
+      errorMsg.textContent = "";
+      errorMsg.classList.remove("show");
+    }
+
+    function getRanking() {
+      const ranking = {}; // rank -> company
+      for (const company of COMPANIES) {
+        const checked = document.querySelector(`input[name="rank-${company}"]:checked`);
+        if (!checked) return null;
+        const rank = checked.value;
+        if (ranking[rank]) return null; // duplicate rank
+        ranking[rank] = company;
+      }
+      return ranking;
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearError();
+
+      const nom = document.getElementById("nom").value.trim();
+      const email = document.getElementById("email").value.trim();
+
+      if (!nom) return showError("Merci de saisir ton nom et prénom.");
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        return showError("Merci de saisir un email valide.");
+      }
+
+      const ranking = getRanking();
+      if (!ranking || !ranking["1"] || !ranking["2"] || !ranking["3"]) {
+        return showError("Merci de classer les 3 entreprises (un choix différent par entreprise).");
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Envoi en cours...";
+
+      try {
+        const body = new URLSearchParams({
+          nom: nom,
+          email: email,
+          choix1: ranking["1"],
+          choix2: ranking["2"],
+          choix3: ranking["3"]
+        });
+
+        const res = await fetch(ENDPOINT_URL, { method: "POST", body });
+        const data = await res.json();
+
+        if (data.status === "ok") {
+          formCard.style.display = "none";
+          successCard.style.display = "block";
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else if (data.status === "duplicate") {
+          showError("Cet email a déjà répondu au questionnaire. Si c'est une erreur, contacte ton organisateur.");
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Envoyer mes choix";
+        } else {
+          showError("Erreur : " + (data.message || "réponse inattendue du serveur."));
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Envoyer mes choix";
+        }
+      } catch (err) {
+        showError("Erreur réseau. Vérifie ta connexion et réessaie.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Envoyer mes choix";
+      }
+    });
+  </script>
+</body>
+</html>
