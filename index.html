@@ -161,72 +161,66 @@
       color: var(--muted);
       margin: 0 0 14px;
     }
-    .ranking-table {
-      width: 100%;
-      border-collapse: separate;
-      border-spacing: 0;
+    .rank-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
       margin-top: 8px;
     }
-    .ranking-table th,
-    .ranking-table td {
-      padding: 12px 8px;
-      text-align: center;
+    .rank-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .rank-row .rank-label {
       font-size: 14px;
-    }
-    .ranking-table thead th {
-      color: var(--muted);
-      font-weight: 600;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      border-bottom: 1.5px solid var(--border);
-    }
-    .ranking-table thead th:first-child {
-      text-align: left;
-    }
-    .ranking-table tbody tr {
-      transition: background 0.15s;
-    }
-    .ranking-table tbody tr + tr td,
-    .ranking-table tbody tr + tr th {
-      border-top: 1px solid var(--border);
-    }
-    .ranking-table tbody th {
-      text-align: left;
       font-weight: 600;
       color: var(--text);
-      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .ranking-table tbody th .quota {
-      display: block;
-      font-weight: 400;
+    .rank-row .rank-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
       font-size: 12px;
-      color: var(--muted);
-      margin-top: 2px;
+      font-weight: 700;
+      flex-shrink: 0;
     }
-    .radio-cell {
-      position: relative;
-    }
-    .radio-cell input[type="radio"] {
+    .rank-select {
+      width: 100%;
+      padding: 12px 44px 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      background-color: #FBFDFE;
+      color: var(--text);
+      cursor: pointer;
       appearance: none;
       -webkit-appearance: none;
-      width: 22px;
-      height: 22px;
-      border: 2px solid var(--border);
-      border-radius: 50%;
-      cursor: pointer;
-      position: relative;
-      transition: border-color 0.15s, background 0.15s;
-      margin: 0;
-      vertical-align: middle;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%232C7AA3' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      transition: border-color 0.15s, box-shadow 0.15s, background-color 0.15s;
     }
-    .radio-cell input[type="radio"]:hover {
+    .rank-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79, 179, 217, 0.18);
+      background-color: #fff;
+    }
+    .rank-select:hover {
       border-color: var(--primary);
     }
-    .radio-cell input[type="radio"]:checked {
-      border-color: var(--primary);
-      background: var(--primary);
-      box-shadow: inset 0 0 0 4px #fff;
+    .rank-select option:disabled {
+      color: #C0C8D0;
     }
     .submit-row {
       display: flex;
@@ -308,9 +302,7 @@
       .header-badge { font-size: 10.5px; padding: 5px 13px; letter-spacing: 0.12em; }
       .card { padding: 28px 20px 24px; border-radius: 14px; }
       h1 { font-size: 21px; }
-      .ranking-table th,
-      .ranking-table td { padding: 10px 4px; font-size: 13px; }
-      .ranking-table tbody th { font-size: 14px; }
+      .rank-select { font-size: 14px; padding: 11px 40px 11px 12px; }
       button.submit-btn { width: 100%; }
       .submit-row { justify-content: stretch; }
     }
@@ -347,40 +339,38 @@
         <div class="field">
           <label class="field-label">Classe par ordre de préférence <span class="required">*</span></label>
           <p class="ranking-intro">
-            Coche une case pour chaque entreprise (Choix 1 = ton entreprise préférée, Choix 3 = ton dernier choix).
-            Chaque colonne ne peut être attribuée qu'à une seule entreprise.
+            Sélectionne tes 3 entreprises par ordre de préférence. Une entreprise déjà choisie sera grisée dans les listes suivantes.
           </p>
 
-          <table class="ranking-table" role="grid">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Choix 1</th>
-                <th>Choix 2</th>
-                <th>Choix 3</th>
-              </tr>
-            </thead>
-            <tbody id="ranking-body">
-              <tr data-company="Behavior">
-                <th>Behavior <span class="quota">33 places max</span></th>
-                <td class="radio-cell"><input type="radio" name="rank-Behavior" value="1" aria-label="Behavior choix 1" /></td>
-                <td class="radio-cell"><input type="radio" name="rank-Behavior" value="2" aria-label="Behavior choix 2" /></td>
-                <td class="radio-cell"><input type="radio" name="rank-Behavior" value="3" aria-label="Behavior choix 3" /></td>
-              </tr>
-              <tr data-company="CGI">
-                <th>CGI <span class="quota">33 places max</span></th>
-                <td class="radio-cell"><input type="radio" name="rank-CGI" value="1" aria-label="CGI choix 1" /></td>
-                <td class="radio-cell"><input type="radio" name="rank-CGI" value="2" aria-label="CGI choix 2" /></td>
-                <td class="radio-cell"><input type="radio" name="rank-CGI" value="3" aria-label="CGI choix 3" /></td>
-              </tr>
-              <tr data-company="Deloitte">
-                <th>Deloitte <span class="quota">34 places max</span></th>
-                <td class="radio-cell"><input type="radio" name="rank-Deloitte" value="1" aria-label="Deloitte choix 1" /></td>
-                <td class="radio-cell"><input type="radio" name="rank-Deloitte" value="2" aria-label="Deloitte choix 2" /></td>
-                <td class="radio-cell"><input type="radio" name="rank-Deloitte" value="3" aria-label="Deloitte choix 3" /></td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="rank-fields">
+            <div class="rank-row">
+              <label class="rank-label" for="choix1"><span class="rank-badge">1</span> Mon 1<sup>er</sup> choix d'entreprise</label>
+              <select id="choix1" class="rank-select" required>
+                <option value="">— Sélectionne une entreprise —</option>
+                <option value="Behavior">Behavior · 33 places max</option>
+                <option value="CGI">CGI · 33 places max</option>
+                <option value="Deloitte">Deloitte · 34 places max</option>
+              </select>
+            </div>
+            <div class="rank-row">
+              <label class="rank-label" for="choix2"><span class="rank-badge">2</span> Mon 2<sup>e</sup> choix d'entreprise</label>
+              <select id="choix2" class="rank-select" required>
+                <option value="">— Sélectionne une entreprise —</option>
+                <option value="Behavior">Behavior · 33 places max</option>
+                <option value="CGI">CGI · 33 places max</option>
+                <option value="Deloitte">Deloitte · 34 places max</option>
+              </select>
+            </div>
+            <div class="rank-row">
+              <label class="rank-label" for="choix3"><span class="rank-badge">3</span> Mon 3<sup>e</sup> choix d'entreprise</label>
+              <select id="choix3" class="rank-select" required>
+                <option value="">— Sélectionne une entreprise —</option>
+                <option value="Behavior">Behavior · 33 places max</option>
+                <option value="CGI">CGI · 33 places max</option>
+                <option value="Deloitte">Deloitte · 34 places max</option>
+              </select>
+            </div>
+          </div>
         </div>
 
         <div class="message error" id="error-msg" role="alert"></div>
@@ -412,21 +402,25 @@
     const errorMsg = document.getElementById("error-msg");
     const formCard = document.getElementById("form-card");
     const successCard = document.getElementById("success-card");
+    const rankSelects = [
+      document.getElementById("choix1"),
+      document.getElementById("choix2"),
+      document.getElementById("choix3")
+    ];
 
-    // Mutual exclusion : when a rank is picked for a company,
-    // uncheck the same rank on other companies.
-    document.querySelectorAll('input[type="radio"]').forEach(radio => {
-      radio.addEventListener("change", () => {
-        const rank = radio.value;
-        const company = radio.name.replace("rank-", "");
-        document.querySelectorAll('input[type="radio"]').forEach(other => {
-          if (other === radio) return;
-          if (other.value === rank && other.name !== radio.name) {
-            other.checked = false;
-          }
+    // Exclusion mutuelle : une entreprise sélectionnée dans un menu
+    // est désactivée dans les autres menus.
+    function refreshRankOptions() {
+      const selected = rankSelects.map(s => s.value).filter(v => v);
+      rankSelects.forEach(select => {
+        Array.from(select.options).forEach(opt => {
+          if (!opt.value) return;
+          opt.disabled = selected.includes(opt.value) && opt.value !== select.value;
         });
       });
-    });
+    }
+    rankSelects.forEach(s => s.addEventListener("change", refreshRankOptions));
+    refreshRankOptions();
 
     function showError(msg) {
       errorMsg.textContent = msg;
@@ -438,15 +432,12 @@
     }
 
     function getRanking() {
-      const ranking = {}; // rank -> company
-      for (const company of COMPANIES) {
-        const checked = document.querySelector(`input[name="rank-${company}"]:checked`);
-        if (!checked) return null;
-        const rank = checked.value;
-        if (ranking[rank]) return null; // duplicate rank
-        ranking[rank] = company;
-      }
-      return ranking;
+      const c1 = rankSelects[0].value;
+      const c2 = rankSelects[1].value;
+      const c3 = rankSelects[2].value;
+      if (!c1 || !c2 || !c3) return null;
+      if (new Set([c1, c2, c3]).size !== 3) return null;
+      return { "1": c1, "2": c2, "3": c3 };
     }
 
     form.addEventListener("submit", async (e) => {
